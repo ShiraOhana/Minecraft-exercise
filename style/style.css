@@ -1,0 +1,184 @@
+:root {
+  --sky-color: #8dbfff;
+  --background-color: rgb(89, 92, 121);
+}
+
+/* Home page (Start) */
+
+#home-page {
+  background: url(../img/coverPhote.jpeg) no-repeat center center/cover;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  font-family: "Varela Round", sans-serif;
+}
+#content {
+  margin: auto;
+  padding-top: 10px;
+  align-items: flex-end;
+  text-align: center;
+  font-family: "Press Start 2P", cursive;
+}
+#how-to-play {
+  font-size: 20px;
+  padding: 30px;
+}
+#how-to-play #title {
+  font-weight: bold;
+  font-size: 50px;
+  text-align: center;
+}
+#btn-start {
+  padding: 30px;
+  background-color: #53653f;
+  color: #fff;
+  margin: 50px auto;
+  border: 1px solid #fff;
+  border-radius: 7px;
+  display: block;
+  font-family: "Press Start 2P", cursive;
+}
+#btn-start:hover {
+  background-color: #84a064;
+  transition: all 500ms ease-in-out;
+  cursor: pointer;
+}
+#btn-start a {
+  text-decoration: none;
+  color: #fff;
+  cursor: pointer;
+}
+
+/* Game page */
+body {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  background-color: var(--background-color);
+  max-width: 100%;
+  font-size: 8px;
+}
+section {
+  background-color: #fff;
+}
+main {
+  width: 85vmax;
+  height: 100vmin;
+  display: grid;
+  grid-template-rows: repeat(20, 1fr);
+  grid-template-columns: repeat(20, 1fr);
+}
+body {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--background-color);
+  max-width: 100%;
+}
+main {
+  width: 100vmin;
+  height: 100vmin;
+  display: flex;
+  justify-content: center;
+}
+#game-board {
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+  display: grid;
+  grid-template-rows: repeat(20, 1fr);
+  grid-template-columns: repeat(20, 1fr);
+}
+#inventory,
+#memory {
+  width: 20vmin;
+  height: 60vmin;
+  background-color: black;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  overflow: hidden;
+}
+#memory {
+  height: 40vmin;
+}
+.item-container,
+.memory-container {
+  border: 2px solid #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.7rem;
+  color: #fff;
+  margin: 10px;
+  cursor: pointer;
+}
+.item {
+  height: 7vmin;
+  width: 7vmin;
+  padding: 2vmin;
+}
+.memory {
+  height: 5vmin;
+  width: 5vmin;
+}
+.memory-container[data-chosen="true"] {
+  border: 2px solid grey;
+}
+div.item-container[data-chosen="true"] {
+  background-color: grey;
+  border: 2px solid white;
+}
+div[data-type="sky"] {
+  background-color: var(--sky-color);
+  width: 100%;
+  height: 100%;
+}
+div[data-type="sky"] {
+  background-color: var(--sky-color);
+  width: 100%;
+  height: 100%;
+}
+div[data-type="dirt"] {
+  background: url(/img/dirt.png) no-repeat center center/cover;
+}
+div[data-type="grass"] {
+  background: url(/img/grass.png) no-repeat center center/cover;
+}
+div[data-type="oak"] {
+  background: url(/img/oak.png) no-repeat center center/cover;
+}
+div[data-type="leaves"] {
+  background: url(/img/leaves.png) no-repeat center center/cover;
+}
+div[data-type="cloud"] {
+  background-color: #fff;
+}
+div[data-type="shovel"] {
+  background: url(/img/shovel.png) no-repeat center center/cover;
+}
+div[data-type="pickaxe"] {
+  background: url(/img/Pickaxe.png) no-repeat center center/cover;
+}
+div[data-type="axe"] {
+  background: url(/img/axe.png) no-repeat center center/cover;
+}
+div[data-type="stone"] {
+  background: url(/img/stone.png) no-repeat center center/cover;
+}
+div[data-status="removed"] {
+  border: 2px solid #fff;
+  cursor: pointer;
+  width: 1vmin;
+  height: 1vmin;
+  margin: 1vmin;
+}
