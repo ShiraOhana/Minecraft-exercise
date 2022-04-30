@@ -1,7 +1,7 @@
 const inventory = document.querySelector("#inventory");
 const gameBoard = document.querySelector("#game-board");
 const memorySection = document.querySelector("#memory");
-const memoryCell = 3;
+const memoryCell = 2;
 const matrix = [];
 let lastPosition = [];
 const activeTool = [];
@@ -27,7 +27,7 @@ const ToolKit = {
   axe: { name: "Axe", id: 2 },
 };
 
-// Creating the matrix itself
+// Creating the matrix itself with a loop
 
 function startMatrix() {
   for (let i = 0; i < 21; i++) {
@@ -53,8 +53,10 @@ function drawMatrix(matrix) {
 drawMatrix(startMatrix());
 const divs = document.querySelectorAll(".brick");
 
-function buildWorld(material, xStart, xEnd, yStart, yEnd) {
-  let getMaterial = Material[material].name; // Get the material from Material if exist
+// Setting the possitions for each element
+
+function positionsOfElements(material, xStart, xEnd, yStart, yEnd) {
+  let getMaterial = Material[material].name; // Get the material from Material
   divs.forEach((element) => {
     if (
       element.dataset.x >= yStart &&
@@ -62,13 +64,13 @@ function buildWorld(material, xStart, xEnd, yStart, yEnd) {
       element.dataset.y >= xStart &&
       element.dataset.y <= xEnd
     ) {
-      element.dataset.type = getMaterial; // Update the material by parameters x and y
+      element.dataset.type = getMaterial; // Update the material by possitions x and y
     }
   });
 }
 
 // Working with the obj of memory bank
-function setInventory(ItemsObj) {
+function toolInventory(ItemsObj) {
   Object.entries(ItemsObj).forEach((key) => {
     let newItem = document.createElement("div");
     newItem.classList.add("item-container");
@@ -77,26 +79,27 @@ function setInventory(ItemsObj) {
   });
 }
 
-function getPosition() {
+function setPosition() {
   divs.forEach((div) => {
-    div.addEventListener("click", (e) => {
-      let x = e.target.dataset.x;
-      let y = e.target.dataset.y;
-      let type = e.target.dataset.type;
+    div.addEventListener("click", (item) => {
+      let x = item.target.dataset.x;
+      let y = item.target.dataset.y;
+      let type = item.target.dataset.type;
       lastPosition.push({
         x: x,
         y: y,
         type: type,
       });
-      removeWithTool();
-      if (flag) {
-        if (e.target.dataset.type === "sky") {
-          e.target.dataset.type = lastPosition[lastPosition.length - 2]["type"];
+      digWithChosenTool();
+      if (sign) {
+        if (item.target.dataset.type === "sky") {
+          item.target.dataset.type =
+            lastPosition[lastPosition.length - 2]["type"];
           lastPosition.pop();
           lastPosition.pop();
           memory.pop();
-          updateMemory(memoryCell);
-          flag = false;
+          updateMemoryStorage(memoryCell);
+          sign = false;
         }
       }
     });
@@ -105,16 +108,16 @@ function getPosition() {
 
 // Positioning with materials & their position on the game board
 // reference to tetromino codealong - same logic - will erase this comment before pushing
-getPosition();
-buildWorld("dirt", 0, 20, 18, 20);
-buildWorld("grass", 0, 20, 17, 17);
-buildWorld("oak", 5, 5, 12, 16);
-buildWorld("leaves", 4, 6, 5, 13);
-buildWorld("cloud", 13, 18, 6, 7);
-buildWorld("cloud", 14, 16, 5, 5);
-buildWorld("stone", 10, 15, 15, 16);
-buildWorld("stone", 19, 20, 16, 16);
-setInventory(ToolKit);
+setPosition();
+positionsOfElements("dirt", 0, 20, 18, 20);
+positionsOfElements("grass", 0, 20, 17, 17);
+positionsOfElements("oak", 5, 5, 12, 16);
+positionsOfElements("leaves", 4, 6, 5, 13);
+positionsOfElements("cloud", 13, 18, 6, 7);
+positionsOfElements("cloud", 14, 16, 5, 5);
+positionsOfElements("stone", 10, 15, 15, 16);
+positionsOfElements("stone", 19, 20, 16, 16);
+toolInventory(ToolKit);
 
 function getItem() {
   const items = document.querySelectorAll(".item-container");
@@ -137,7 +140,7 @@ getItem();
 // Removing marerial with his matching tool
 let buildMemory = false;
 
-function removeWithTool() {
+function digWithChosenTool() {
   if (lastPosition) {
     if (activeTool) {
       if (
@@ -145,7 +148,7 @@ function removeWithTool() {
         lastPosition[lastPosition.length - 1]["type"] !== "sky" &&
         lastPosition[lastPosition.length - 1]["type"] !== "cloud"
       ) {
-        createMemory(memoryCell);
+        createMemoryStorage(memoryCell);
         buildMemory = true;
       }
       if (
@@ -160,7 +163,7 @@ function removeWithTool() {
           );
         });
         memory.push(brick[0].dataset.type);
-        updateMemory(memoryCell);
+        updateMemoryStorage(memoryCell);
         brick[0].dataset.type = "sky";
       } else if (
         (lastPosition[lastPosition.length - 1]["type"] === "oak" ||
@@ -174,7 +177,7 @@ function removeWithTool() {
           );
         });
         memory.push(brick[0].dataset.type);
-        updateMemory(memoryCell);
+        updateMemoryStorage(memoryCell);
         brick[0].dataset.type = "sky";
       } else if (
         lastPosition[lastPosition.length - 1]["type"] === "stone" &&
@@ -187,7 +190,7 @@ function removeWithTool() {
           );
         });
         memory.push(brick[0].dataset.type);
-        updateMemory(memoryCell);
+        updateMemoryStorage(memoryCell);
         brick[0].dataset.type = "sky";
       }
       useMemory();
@@ -195,8 +198,8 @@ function removeWithTool() {
   }
 }
 
-// Memory with appendChild
-function createMemory(numberOfCells) {
+// Memory with appendChild and add a new element and class
+function createMemoryStorage(numberOfCells) {
   for (let i = numberOfCells; i > 0; i--) {
     let newMemoryCell = document.createElement("div");
     newMemoryCell.classList.add("memory-container");
@@ -206,7 +209,7 @@ function createMemory(numberOfCells) {
     memorySection.appendChild(newMemoryCell);
   }
 }
-function updateMemory(numberOfCells) {
+function updateMemoryStorage(numberOfCells) {
   const memoryDiv = document.querySelectorAll(".memory-container");
   for (let i = -1, j = 0; i >= -numberOfCells; i--, j++) {
     memoryDiv[j].firstElementChild.dataset.type = memory[memory.length + i];
@@ -214,7 +217,7 @@ function updateMemory(numberOfCells) {
   }
   return memoryDiv;
 }
-let flag = false;
+let sign = false;
 function useMemory() {
   const memoryCellDivs = document.querySelectorAll(".memory");
   let items = document.querySelectorAll(".item-container"); // Get Items (tools)
@@ -233,8 +236,8 @@ function useMemory() {
         activeTool.pop();
       }
       if (buildWithMemory(e)) {
-        flag = true; // chose memory item to use
-        updateMemory();
+        sign = true; // which memory item to use
+        updateMemoryStorage();
       }
     });
   });
